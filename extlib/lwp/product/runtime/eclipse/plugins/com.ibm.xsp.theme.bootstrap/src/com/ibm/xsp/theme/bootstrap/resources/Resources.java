@@ -15,11 +15,15 @@
  */
 package com.ibm.xsp.theme.bootstrap.resources;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.ibm.xsp.context.FacesContextEx;
 import com.ibm.xsp.resource.DojoModuleResource;
+import com.ibm.xsp.resource.ScriptResource;
 
 public abstract class Resources {
-	
+
 	public String BLANK_GIF;
 	public String VIEW_COLUMN_SORT_NONE;
 	public String VIEW_COLUMN_SORT_BOTH_ASCENDING;
@@ -27,10 +31,10 @@ public abstract class Resources {
 	public String VIEW_COLUMN_SORT_NORMAL;
 	public String VIEW_COLUMN_SORT_REVERSE;
 
-	//We can add new icon fonts here in the future if we need to
-	//For now only glyph icon is used
-	public static final int GLYPH_ICON 				= 0;
-	public int DEFAULT_ICON 						= GLYPH_ICON;
+	// We can add new icon fonts here in the future if we need to
+	// For now only glyph icon is used
+	public static final int GLYPH_ICON = 0;
+	public int DEFAULT_ICON = GLYPH_ICON;
 
 	public static Resources get() {
 		return get(FacesContextEx.getCurrentInstance());
@@ -60,6 +64,22 @@ public abstract class Resources {
 	public static final DojoModuleResource bootstrapPickerListSearch = new DojoModuleResource("extlib.responsive.dijit.xsp.bootstrap.PickerListSearch"); // $NON-NLS-1$
 	public static final DojoModuleResource bootstrapPickerName = new DojoModuleResource("extlib.responsive.dijit.xsp.bootstrap.PickerName"); // $NON-NLS-1$
 
+	// Angular ScriptLibs;
+	public static ScriptResource ANGULAR_1_1_4 = new ScriptResource("/.ibmxspres/.extlib/responsive/angular/angular.1.1.4.min.js", true);
+	public static ScriptResource ANGULAR_1_2_28 = new ScriptResource("/.ibmxspres/.extlib/responsive/angular/angular.1.2.28.min.js", true);
+	public static ScriptResource ANGULAR_1_3_8 = new ScriptResource("/.ibmxspres/.extlib/responsive/angular/angular.1.3.8.min.js", true);
+
+	private static Map<String, ScriptResource> ANGULAR_VERSIONS = new HashMap<String, ScriptResource>() {
+		private static final long serialVersionUID = 1L;
+
+		{
+			put("1.1.4", ANGULAR_1_1_4);
+			put("1.2.28", ANGULAR_1_2_28);
+			put("1.3.8", ANGULAR_1_3_8);
+			put("latest", ANGULAR_1_3_8);
+		}
+	};
+
 	public Resources() {
 		this.BLANK_GIF = "/.ibmxspres/.extlib/responsive/xpages/img/blank.gif"; // $NON-NLS-1$
 		this.VIEW_COLUMN_SORT_NONE = "/.ibmxspres/.extlib/responsive/xpages/img/sort_none.gif"; // $NON-NLS-1$
@@ -72,11 +92,19 @@ public abstract class Resources {
 	public String getIconClass(String iconName) {
 		return getIconClass(iconName, DEFAULT_ICON);
 	}
-	
+
 	public String getIconClass(String iconName, int type) {
-		if(type == GLYPH_ICON) {
+		if (type == GLYPH_ICON) {
 			return "glyphicon glyphicon-" + iconName;
 		}
 		return iconName;
 	}
+
+	public static ScriptResource getAngularScriptLibrary(String version) {
+		if (ANGULAR_VERSIONS.containsKey(version)) {
+			return ANGULAR_VERSIONS.get(version);
+		}
+		return null;
+	}
+
 }
